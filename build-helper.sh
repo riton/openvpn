@@ -19,6 +19,8 @@ then
   exit 1
 fi
 
+make clean
+
 make
 if [ $? -ne 0 ]
 then
