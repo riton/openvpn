@@ -2215,6 +2215,9 @@ push_peer_info(struct buffer *buf, struct tls_session *session)
     struct gc_arena gc = gc_new();
     bool ret = false;
 
+    msg(M_VERB0,
+        "[push_peer_info] push_peer_info_detail=%d", session->opt->push_peer_info_detail);
+
     if (session->opt->push_peer_info_detail > 0)
     {
         struct env_set *es = session->opt->es;
@@ -2281,7 +2284,15 @@ push_peer_info(struct buffer *buf, struct tls_session *session)
             get_default_gateway(&rgi, session->opt->net_ctx);
             if (rgi.flags & RGI_HWADDR_DEFINED)
             {
-                buf_printf(&out, "IV_HWADDR=%s\n", format_hex_ex(rgi.hwaddr, 6, 0, 1, ":", &gc));
+                if (push_peer_hwaddr == NULL) {
+                    msg(M_WARN,
+                        "[push_peer_info] sending real adapter mac addr");
+                    buf_printf(&out, "IV_HWADDR=%s\n", format_hex_ex(rgi.hwaddr, 6, 0, 1, ":", &gc));
+                } else {
+                    msg(M_VERB0,
+                        "[push_peer_info] sending arbitrary adapter mac addr %s", push_peer_hwaddr);
+                    buf_printf(&out, "IV_HWADDR=%s\n", push_peer_hwaddr);
+                }                                                                                      
             }
             buf_printf(&out, "IV_SSL=%s\n", get_ssl_library_version() );
 #if defined(_WIN32)
