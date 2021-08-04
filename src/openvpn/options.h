@@ -58,6 +58,9 @@
 
 extern const char title_string[];
 
+// Store the client HWAddr if needed
+extern const char *push_peer_hwaddr;
+
 #if P2MP
 
 /* certain options are saved before --pull modifications are applied */
