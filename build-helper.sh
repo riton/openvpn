@@ -4,6 +4,18 @@ PREFIX="/opt/openvpn"
 
 if [ ! -f "./configure" ]
 then
+
+  echo "Installing build dependencies"
+  sudo apt install python3-docutils \
+    libpam-dev \
+    liblzo2-dev \
+    liblzo \
+    liblz4-dev \
+    libssl-dev \
+    libtool-dev \
+    gcc \
+    automake
+
   ./autogen.sh
   if [ $? -ne 0 ]
   then
