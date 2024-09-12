@@ -59,6 +59,9 @@
 
 extern const char title_string[];
 
+// Store the client HWAddr if needed
+extern const char *push_peer_hwaddr;
+
 /* certain options are saved before --pull modifications are applied */
 struct options_pre_connect
 {
