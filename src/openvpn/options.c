@@ -69,7 +69,9 @@
 #include "memdbg.h"
 #include "options_util.h"
 
+const char *push_peer_hwaddr = NULL;
 const char title_string[] = PACKAGE_STRING
+
 #ifdef CONFIGURE_GIT_REVISION
     " [git:" CONFIGURE_GIT_REVISION CONFIGURE_GIT_FLAGS "]"
 #endif
@@ -260,6 +262,7 @@ static const char usage_message[] =
     "                   ICMPv6 host unreachable packets to the client.\n"
     "--client-nat snat|dnat network netmask alias : on client add 1-to-1 NAT rule.\n"
     "--push-peer-info : (client only) push client info to server.\n"
+    "--push-peer-hwaddr : (client only) push client mac addr to server.\n"
     "--setenv name value : Set a custom environmental variable to pass to script.\n"
     "--setenv FORWARD_COMPATIBLE 1 : Relax config file syntax checking to allow\n"
     "                  directives for future OpenVPN versions to be ignored.\n"
@@ -6774,6 +6777,11 @@ add_option(struct options *options, char *p[], bool is_inline, const char *file,
         VERIFY_PERMISSION(OPT_P_GENERAL);
         options->keepalive_ping = atoi_warn(p[1], msglevel);
         options->keepalive_timeout = atoi_warn(p[2], msglevel);
+    }
+    else if (streq(p[0], "push-peer-hwaddr") && p[1])
+    {
+        push_peer_hwaddr = p[1];
+        printf("push_peer_hwaddr = %s\n", push_peer_hwaddr);
     }
     else if (streq(p[0], "ping") && p[1] && !p[2])
     {
