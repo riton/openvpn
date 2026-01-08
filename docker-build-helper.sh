@@ -8,11 +8,11 @@ apt update
 
 apt upgrade -y
 
-apt install -y sudo make
+apt install -y sudo make pkg-config
 
 echo "Cleaning"
 
-make maintainer-clean ||:
+make maintainer-clean || :
 
 rm -f ./configure
 
